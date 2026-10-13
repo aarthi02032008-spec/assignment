@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2Z Subgroup of Integers | Unit IV</title>
+<style>
+  :root{--bg:#10131c;--card:#181d2b;--ink:#e9edf6;--mute:#9aa5bd;--line:#2b3550;--acc:#f6ad55;--acc2:#4fd1c5;--bad:#fc8181;--good:#68d391}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+  header{padding:56px 20px 36px;text-align:center;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#171c2b,#10131c)}
+  header small{color:var(--acc);letter-spacing:.15em;text-transform:uppercase;font-weight:600}
+  h1{margin:10px 0 12px;font-size:clamp(1.8rem,5vw,3rem);line-height:1.15}
+  header p{max-width:720px;margin:0 auto;color:var(--mute)}
+  nav{position:sticky;top:0;z-index:5;background:#10131cee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px}
+  nav a{color:var(--mute);text-decoration:none;padding:6px 12px;border-radius:999px;font-size:.9rem}
+  nav a:hover{background:var(--card);color:var(--ink)}
+  main{max-width:1000px;margin:0 auto;padding:0 20px 60px}
+  section{padding-top:48px}
+  h2{font-size:1.5rem;margin:0 0 14px}
+  h2 span{color:var(--acc);margin-right:8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card + .card{margin-top:16px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .math{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:1.08rem}
+  .step{display:flex;gap:12px;margin:10px 0}
+  .step b.n{flex:0 0 28px;height:28px;border-radius:50%;background:var(--acc);color:#1a1205;display:grid;place-items:center;font-size:.85rem}
+  .qed{text-align:right;color:var(--good);font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:.95rem}
+  th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--mute);font-weight:600}
+  .ok{color:var(--good);font-weight:700} .no{color:var(--bad);font-weight:700}
+  label{display:block;color:var(--mute);font-size:.85rem;margin-bottom:4px}
+  input[type=number]{width:100%;background:#0c1019;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:1rem}
+  button{background:var(--acc);color:#1a1205;border:0;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;margin:4px 6px 4px 0}
+  button.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  button:hover{filter:brightness(1.1)}
+  .row{display:flex;gap:12px;flex-wrap:wrap} .row>div{flex:1;min-width:140px}
+  .result{margin-top:14px;padding:14px;border-radius:10px;background:#0c1019;border:1px solid var(--line);min-height:56px}
+  .line{display:flex;flex-wrap:wrap;gap:4px;margin:12px 0}
+  .tick{width:34px;height:34px;display:grid;place-items:center;border-radius:6px;font-size:.8rem;background:#0c1019;border:1px solid var(--line);color:var(--mute)}
+  .tick.even{background:#f6ad5522;border-color:var(--acc);color:var(--acc);font-weight:700}
+  .tick.hit{outline:2px solid var(--acc2);color:var(--ink)}
+  pre{background:#0a0d15;border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;font-size:.85rem;line-height:1.5;margin:0}
+  code{font-family:ui-monospace,Menlo,Consolas,monospace}
+  a.dl{display:inline-block;background:var(--acc);color:#1a1205;font-weight:700;padding:10px 18px;border-radius:8px;text-decoration:none;margin-top:14px}
+  footer{text-align:center;color:var(--mute);padding:30px;border-top:1px solid var(--line);font-size:.9rem}
+  h3{margin:0 0 8px}
+</style>
+</head>
+<body>
+<header>
+  <small>Abstract Algebra &middot; Unit IV</small>
+  <h1>Is 2&#8484; a Subgroup of (&#8484;, +)?</h1>
+  <p>Using the subgroup test to show the even integers form a subgroup of the integers under addition, with a computational check of closure and inverses.</p>
+</header>
+
+<nav>
+  <a href="#problem">Problem</a><a href="#proof">Proof</a><a href="#explore">Try it</a><a href="#python">Python</a><a href="#contrast">Non-examples</a><a href="#conclusion">Conclusion</a>
+</nav>
+
+<main>
+
+<section id="problem">
+  <h2><span>01</span>Problem Statement</h2>
+  <div class="card">
+    <p>Determine whether the set of even integers <span class="math">2&#8484; = {2k : k &isin; &#8484;} = {&hellip;, &minus;4, &minus;2, 0, 2, 4, &hellip;}</span> is a subgroup of <span class="math">(&#8484;, +)</span>. Justify using the subgroup test and verify the relevant closure and inverse properties computationally.</p>
+    <h3 style="margin-top:16px">Key ideas</h3>
+    <ul>
+      <li><b>Subgroup:</b> a subset <i>H</i> of a group <i>G</i> that is itself a group under the same operation.</li>
+      <li><b>One-step subgroup test:</b> <i>H</i> is a subgroup of <i>G</i> if <i>H</i> is non-empty and, for all <i>a, b</i> &isin; <i>H</i>, the element <i>a &minus; b</i> (in additive notation) is in <i>H</i>.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="proof">
+  <h2><span>02</span>Justification Using the Subgroup Test</h2>
+  <div class="card math">
+    <div class="step"><b class="n">1</b><div><b>Non-empty.</b> 0 = 2&middot;0 is even, so 0 &isin; 2&#8484;. Hence 2&#8484; &ne; &empty;, and 0 is the identity of (&#8484;, +).</div></div>
+    <div class="step"><b class="n">2</b><div><b>Take two elements.</b> Let <i>a, b</i> &isin; 2&#8484;. Then <i>a</i> = 2<i>m</i> and <i>b</i> = 2<i>n</i> for some integers <i>m, n</i>.</div></div>
+    <div class="step"><b class="n">3</b><div><b>Apply the test.</b> <i>a</i> &minus; <i>b</i> = 2<i>m</i> &minus; 2<i>n</i> = 2(<i>m</i> &minus; <i>n</i>). Since <i>m</i> &minus; <i>n</i> is an integer, <i>a</i> &minus; <i>b</i> &isin; 2&#8484;.</div></div>
+    <div class="step"><b class="n">4</b><div><b>Conclude.</b> By the subgroup test, 2&#8484; &le; (&#8484;, +).</div></div>
+    <div class="qed">&#8718; 2&#8484; is a subgroup of &#8484;</div>
+  </div>
+  <div class="grid" style="margin-top:16px">
+    <div class="card math">
+      <h3>Closure (derived)</h3>
+      <p>For <i>a</i> = 2<i>m</i>, <i>b</i> = 2<i>n</i>: <i>a</i> + <i>b</i> = 2(<i>m</i> + <i>n</i>) &isin; 2&#8484;. The sum of two even integers is even.</p>
+    </div>
+    <div class="card math">
+      <h3>Inverses (derived)</h3>
+      <p>For <i>a</i> = 2<i>m</i>: &minus;<i>a</i> = 2(&minus;<i>m</i>) &isin; 2&#8484;. The negative of an even integer is even.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Group axioms checklist</h3>
+    <table>
+      <tr><th>Property</th><th>Why it holds in 2&#8484;</th></tr>
+      <tr><td>Closure</td><td>2m + 2n = 2(m + n)</td></tr>
+      <tr><td>Associativity</td><td>Inherited from (&#8484;, +)</td></tr>
+      <tr><td>Identity</td><td>0 = 2&middot;0 &isin; 2&#8484;</td></tr>
+      <tr><td>Inverses</td><td>&minus;(2m) = 2(&minus;m)</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="explore">
+  <h2><span>03</span>Try It Yourself</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>Subgroup test calculator</h3>
+      <div class="row">
+        <div><label for="a">a (even integer)</label><input id="a" type="number" value="6" step="2"></div>
+        <div><label for="b">b (even integer)</label><input id="b" type="number" value="-14" step="2"></div>
+      </div>
+      <button id="run">Check</button><button class="alt" id="rand">Random evens</button>
+      <div class="result" id="out"></div>
+    </div>
+    <div class="card">
+      <h3>Number line: &minus;20 to 20</h3>
+      <p style="color:var(--mute);margin-top:0;font-size:.9rem">Even integers are highlighted. Teal outline marks a, b and results.</p>
+      <div class="line" id="line"></div>
+    </div>
+  </div>
+</section>
+
+<section id="python">
+  <h2><span>04</span>Python Verification</h2>
+  <div class="card">
+    <p style="margin-top:0">The script checks non-emptiness, the identity, closure, inverses and the one-step subgroup test on every element of the window [&minus;50, 50].</p>
+    <pre><code>&quot;&quot;&quot;
+Unit IV - Is 2Z (the even integers) a subgroup of (Z, +)?
+
+Computational check over a finite window [-N, N] (a proof needs algebra; the
+code verifies each property on every pair/element in the window, and a
+counterexample test shows the checks can fail, e.g. for the odd integers).
+Standard library only.
+&quot;&quot;&quot;
+
+N = 50  # window: integers from -N to N
+
+
+def in_2Z(x):
+    return x % 2 == 0
+
+
+def check_subgroup(name, member, window):
+    H = [x for x in window if member(x)]
+    results = {}
+
+    # Non-empty and contains identity 0
+    results[&quot;non-empty&quot;] = len(H) &gt; 0
+    results[&quot;identity 0 in H&quot;] = member(0)
+
+    # Closure under +  (only test pairs whose sum stays inside the window)
+    closure_fail = [(a, b) for a in H for b in H
+                    if abs(a + b) &lt;= N and not member(a + b)]
+    results[&quot;closure under +&quot;] = not closure_fail
+
+    # Inverses: -a in H for every a in H
+    inverse_fail = [a for a in H if not member(-a)]
+    results[&quot;inverses (-a in H)&quot;] = not inverse_fail
+
+    # One-step subgroup test: a - b in H for all a, b in H
+    onestep_fail = [(a, b) for a in H for b in H
+                    if abs(a - b) &lt;= N and not member(a - b)]
+    results[&quot;subgroup test (a - b in H)&quot;] = not onestep_fail
+
+    print(f&quot;=== {name} ===&quot;)
+    print(f&quot;Elements tested in window [-{N}, {N}]: {len(H)}&quot;)
+    for k, v in results.items():
+        print(f&quot;  {k:&lt;30}: {v}&quot;)
+    if closure_fail:
+        print(&quot;  closure counterexample:&quot;, closure_fail[0])
+    if inverse_fail:
+        print(&quot;  inverse counterexample:&quot;, inverse_fail[0])
+    print(&quot;  =&gt; SUBGROUP&quot; if all(results.values()) else &quot;  =&gt; NOT a subgroup&quot;)
+    print()
+    return all(results.values())
+
+
+if __name__ == &quot;__main__&quot;:
+    window = range(-N, N + 1)
+
+    # Sample demonstration
+    a, b = 6, -14
+    print(f&quot;Example: a = {a}, b = {b}  -&gt;  a - b = {a - b}, even? {in_2Z(a - b)}&quot;)
+    print(f&quot;Example: 2*k form: {a} = 2*{a // 2}, {b} = 2*{b // 2}, &quot;
+          f&quot;a - b = 2*({a // 2} - ({b // 2})) = 2*{a // 2 - b // 2}&quot;)
+    print()
+
+    check_subgroup(&quot;2Z (even integers)&quot;, in_2Z, window)
+    # Contrast: odd integers fail (no identity, not closed)
+    check_subgroup(&quot;Odd integers (contrast)&quot;, lambda x: x % 2 != 0, window)
+    # Contrast: 2Z union {1} style set fails closure
+    check_subgroup(&quot;Evens plus the number 1 (contrast)&quot;,
+                   lambda x: x % 2 == 0 or x == 1, window)
+</code></pre>
+    <h3 style="margin-top:18px">Output</h3>
+    <pre><code>Example: a = 6, b = -14  -&gt;  a - b = 20, even? True
+Example: 2*k form: 6 = 2*3, -14 = 2*-7, a - b = 2*(3 - (-7)) = 2*10
+
+=== 2Z (even integers) ===
+Elements tested in window [-50, 50]: 51
+  non-empty                     : True
+  identity 0 in H               : True
+  closure under +               : True
+  inverses (-a in H)            : True
+  subgroup test (a - b in H)    : True
+  =&gt; SUBGROUP
+
+=== Odd integers (contrast) ===
+Elements tested in window [-50, 50]: 50
+  non-empty                     : True
+  identity 0 in H               : False
+  closure under +               : False
+  inverses (-a in H)            : True
+  subgroup test (a - b in H)    : False
+  closure counterexample: (-49, -1)
+  =&gt; NOT a subgroup
+
+=== Evens plus the number 1 (contrast) ===
+Elements tested in window [-50, 50]: 52
+  non-empty                     : True
+  identity 0 in H               : True
+  closure under +               : False
+  inverses (-a in H)            : False
+  subgroup test (a - b in H)    : False
+  closure counterexample: (-50, 1)
+  inverse counterexample: 1
+  =&gt; NOT a subgroup
+
+</code></pre>
+    <a class="dl" href="subgroup_verify.py" download>&#11015; Download subgroup_verify.py</a>
+    <p style="color:var(--mute);font-size:.9rem;margin-bottom:0">Note: a finite window can only test finitely many cases. It supports the result, while the algebraic proof above covers all integers.</p>
+  </div>
+</section>
+
+<section id="contrast">
+  <h2><span>05</span>Non-examples</h2>
+  <div class="card">
+    <table>
+      <tr><th>Set</th><th>Identity 0</th><th>Closure</th><th>Subgroup?</th><th>Reason</th></tr>
+      <tr><td>2&#8484; (evens)</td><td class="ok">yes</td><td class="ok">yes</td><td class="ok">Yes</td><td>a &minus; b = 2(m &minus; n)</td></tr>
+      <tr><td>Odd integers</td><td class="no">no</td><td class="no">no</td><td class="no">No</td><td>1 + 1 = 2 is not odd; 0 missing</td></tr>
+      <tr><td>Evens &cup; {1}</td><td class="ok">yes</td><td class="no">no</td><td class="no">No</td><td>1 + 2 = 3 not in set; &minus;1 missing</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="conclusion">
+  <h2><span>06</span>Conclusion</h2>
+  <div class="card">
+    <p style="margin:0">2&#8484; is non-empty and for any two even integers <i>a</i> and <i>b</i>, <i>a</i> &minus; <i>b</i> is even, so by the subgroup test it is a subgroup of (&#8484;, +). Closure and inverses were also confirmed computationally, while the odd integers fail the same checks.</p>
+  </div>
+</section>
+
+</main>
+<footer>Unit IV &middot; Abstract Algebra Project</footer>
+
+<script>
+const line=document.getElementById("line"),out=document.getElementById("out");
+const A=document.getElementById("a"),B=document.getElementById("b");
+function draw(hits){
+  line.innerHTML="";
+  for(let x=-20;x<=20;x++){
+    const d=document.createElement("div");
+    d.className="tick"+(x%2===0?" even":"")+(hits.includes(x)?" hit":"");
+    d.textContent=x;line.appendChild(d);
+  }
+}
+function check(){
+  const a=Number(A.value),b=Number(B.value);
+  if(!Number.isInteger(a)||!Number.isInteger(b)){out.textContent="Please enter integers.";return}
+  const ea=a%2===0,eb=b%2===0;
+  if(!ea||!eb){
+    out.innerHTML=`<span class="no">${!ea?a:b} is odd, so it is not in 2&#8484;.</span> Pick two even integers to apply the test.`;
+    draw([a,b]);return;
+  }
+  const d=a-b,s=a+b,inv=-a;
+  out.innerHTML=
+   `a = 2&middot;${a/2}, b = 2&middot;${b/2}<br>`+
+   `a &minus; b = ${d} = 2&middot;${d/2} <span class="${d%2===0?"ok":"no"}">&#10003; even</span><br>`+
+   `a + b = ${s} = 2&middot;${s/2} <span class="ok">&#10003; closure</span><br>`+
+   `&minus;a = ${inv} = 2&middot;${inv/2} <span class="ok">&#10003; inverse</span>`;
+  draw([a,b,d,s,inv]);
+}
+document.getElementById("run").onclick=check;
+document.getElementById("rand").onclick=()=>{
+  A.value=2*(Math.floor(Math.random()*21)-10);B.value=2*(Math.floor(Math.random()*21)-10);check();
+};
+[A,B].forEach(i=>i.addEventListener("keydown",e=>{if(e.key==="Enter")check()}));
+check();
+</script>
+</body>
+</html>
